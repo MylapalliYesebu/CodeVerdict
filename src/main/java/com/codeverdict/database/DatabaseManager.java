@@ -258,6 +258,11 @@ public enum DatabaseManager {
      */
     private Connection createConnection() {
         try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("PostgreSQL JDBC Driver not found", e);
+        }
+        try {
             return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Failed to create database connection to {0}: {1}",
