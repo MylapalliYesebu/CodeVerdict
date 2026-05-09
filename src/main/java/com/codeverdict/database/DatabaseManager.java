@@ -127,7 +127,7 @@ public enum DatabaseManager {
                         + "available after " + CONNECTION_TIMEOUT_SECONDS + "s.");
             }
             // Replace stale connection transparently
-            if (conn.isClosed()) {
+            if (conn.isClosed() || !conn.isValid(1)) {
                 LOGGER.warning("Stale connection detected — creating replacement.");
                 conn = createConnection();
             }
