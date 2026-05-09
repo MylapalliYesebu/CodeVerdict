@@ -1,7 +1,7 @@
 services:
   - type: web
     name: codeverdict
-    env: java
+    runtime: java17
     buildCommand: mvn clean package -DskipTests
     startCommand: java -jar target/codeverdict.jar
     envVars:
