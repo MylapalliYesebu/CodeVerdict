@@ -1,9 +1,9 @@
 services:
   - type: web
     name: codeverdict
-    runtime: java17
+    runtime: java
     buildCommand: mvn clean package -DskipTests
-    startCommand: java -jar target/codeverdict.jar
+    startCommand: java -jar target/*.jar
     envVars:
       - key: PORT
         value: 8080
