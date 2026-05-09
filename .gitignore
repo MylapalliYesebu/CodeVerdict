@@ -1,7 +1,19 @@
+# Env files
 .env
+
+# Build output
 target/
+dependency-reduced-pom.xml
+
+# Java artifacts
 *.class
 *.jar
+*.log
+
+# IDEs
+.vscode/
 .idea/
 *.iml
+
+# Project-specific
 submissions/
