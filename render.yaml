@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: codeverdict
+    env: java
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/codeverdict.jar
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: DB_URL
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: LOG_LEVEL
+        value: INFO

@@ -1,0 +1,97 @@
+### CodeVerdict API Testing Workflow
+# This file can be used with VS Code "REST Client" or IntelliJ IDEA "HTTP Client".
+# You can click "Send Request" above each endpoint to test them sequentially.
+
+@baseUrl = http://localhost:8080/api
+
+### 1. Register a new user
+# @name register
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "username": "test_admin",
+  "email": "admin@codeverdict.com",
+  "password": "securepassword123"
+}
+
+### 2. Login to get token
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@codeverdict.com",
+  "password": "securepassword123"
+}
+
+### Extract Token (Handled automatically in some clients, but we'll define a variable)
+@authToken = {{login.response.body.token}}
+
+### Note: To test creating a problem, the user needs to be an ADMIN.
+### In a real scenario, you'd update this in the DB: 
+### psql -h localhost -U cv_user -d codeverdict_dev -c "UPDATE users SET role='ADMIN' WHERE email='admin@codeverdict.com';"
+
+### 3. Create a new problem (Requires ADMIN token)
+# @name createProblem
+POST {{baseUrl}}/problems
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "title": "Two Sum",
+  "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
+  "difficulty": "EASY",
+  "testCases": [
+    {
+      "input": "2 7 11 15\n9",
+      "expectedOutput": "0 1",
+      "isPublic": true
+    },
+    {
+      "input": "3 2 4\n6",
+      "expectedOutput": "1 2",
+      "isPublic": false
+    }
+  ]
+}
+
+### 4. Get list of problems
+# @name getProblems
+GET {{baseUrl}}/problems?page=1&limit=10
+
+### 5. Get a specific problem by ID (replace 1 with actual ID from above)
+GET {{baseUrl}}/problems/1
+
+### 6. Submit a code solution
+# @name submitCode
+POST {{baseUrl}}/submit
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "problemId": 1,
+  "language": "JAVA",
+  "sourceCode": "import java.util.Scanner;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        System.out.print(a + b);\n    }\n}"
+}
+
+### Extract Submission ID
+@submissionId = {{submitCode.response.body.submissionId}}
+
+### 7. Check submission status (replace 1 with the actual submissionId)
+GET {{baseUrl}}/submissions/1
+Authorization: Bearer {{authToken}}
+
+### 8. List all submissions for the user
+GET {{baseUrl}}/submissions?page=1&limit=10
+Authorization: Bearer {{authToken}}
+
+### 9. Get the Leaderboard
+GET {{baseUrl}}/leaderboard
+
+### 10. Logout
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{authToken}}
+
+### 11. Health Check
+GET {{baseUrl}}/health
