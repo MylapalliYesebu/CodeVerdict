@@ -5,7 +5,6 @@ import com.codeverdict.services.SubmissionService;
 import com.codeverdict.utils.JsonUtil;
 import com.sun.net.httpserver.HttpExchange;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 

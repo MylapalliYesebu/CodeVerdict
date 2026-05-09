@@ -2,7 +2,6 @@ package com.codeverdict.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 
-import java.io.IOException;
 import java.time.Instant;
 
 /**

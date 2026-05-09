@@ -11,13 +11,11 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 // Using ReadWriteLock — allows concurrent reads while ensuring exclusive writes.
 public class SimpleCache<K, V> {
 
-    private final int maxSize;
     private final long ttlSeconds;
     private final LinkedHashMap<K, CacheEntry<V>> map;
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     public SimpleCache(int maxSize, long ttlSeconds) {
-        this.maxSize = maxSize;
         this.ttlSeconds = ttlSeconds;
         this.map = new LinkedHashMap<>(maxSize, 0.75f, true) {
             @Override
