@@ -91,6 +91,88 @@ java -jar target/codeverdict.jar
 
 ---
 
+## 🌐 Live Production URLs
+
+The backend is currently deployed and accessible via Render, backed by a Neon PostgreSQL database.
+
+| Endpoint | Production URL |
+|----------|----------------|
+| **Health** | `https://codeverdict-r65q.onrender.com/api/health` |
+| **Signup** | `https://codeverdict-r65q.onrender.com/api/auth/signup` |
+| **Login** | `https://codeverdict-r65q.onrender.com/api/auth/login` |
+| **Problems** | `https://codeverdict-r65q.onrender.com/api/problems` |
+| **Submit** | `https://codeverdict-r65q.onrender.com/api/submit` |
+| **Leaderboard** | `https://codeverdict-r65q.onrender.com/api/leaderboard` |
+
+---
+
+## 💻 API Usage Examples (cURL)
+
+Below are example `curl` commands demonstrating how to interact with the live production API.
+
+**1. Register a New User**
+```bash
+curl -X POST https://codeverdict-r65q.onrender.com/api/auth/signup \
+  -H "Content-Type: application/json" \
+  -d '{"username":"coder123","email":"coder@example.com","password":"password123"}'
+```
+
+**2. Login to get a JWT Token**
+```bash
+curl -X POST https://codeverdict-r65q.onrender.com/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"coder@example.com","password":"password123"}'
+```
+*Note: Extract the `"token"` value from the response for authenticated requests.*
+
+**3. Fetch All Problems**
+```bash
+curl -X GET https://codeverdict-r65q.onrender.com/api/problems
+```
+
+**4. Submit a Solution**
+*Requires an active session token.*
+```bash
+curl -X POST https://codeverdict-r65q.onrender.com/api/submit \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "problemId": 1,
+    "language": "java",
+    "sourceCode": "import java.util.Scanner; public class Main { public static void main(String[] args) { Scanner sc = new Scanner(System.in); int a = sc.nextInt(); int b = sc.nextInt(); System.out.print(a + b); } }"
+  }'
+```
+
+**5. Check Submission Status**
+```bash
+curl -X GET https://codeverdict-r65q.onrender.com/api/submissions/1 \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE"
+```
+
+**6. View the Leaderboard**
+```bash
+curl -X GET https://codeverdict-r65q.onrender.com/api/leaderboard
+```
+
+---
+
+
+## 📸 Screenshots
+
+### 1. User Login API
+![CodeVerdict Login API](./screenshots/codeverdict-login.png)
+
+### 2. Get Problem API
+![CodeVerdict Get Problem API](./screenshots/codeverdict-get_problems.png)
+
+### 3. Submissions API
+![CodeVerdict Submissions API](./screenshots/codeverdict-submissions.png)
+
+### 4. Leaderboard API
+![CodeVerdict Leaderboard API](./screenshots/codeverdict-leaderboard.png)
+
+---
+
 ## 🧪 Testing
 
 CodeVerdict has 100% core business-logic coverage mapped across `JUnit 5`.
@@ -111,6 +193,29 @@ CodeVerdict is fully infrastructure-as-code ready for [Render](https://render.co
 A `render.yaml` configuration is located in the root repository mapping the Java environment bounds.
 
 Just hook the repository to Render, configure your `.env` variables in the dashboard, and the pipeline will build automatically via `mvn clean package`.
+
+---
+
+## ⚠️ Known Limitations
+- The Sandbox engine currently utilizes raw OS `ProcessBuilder` forks for isolated compilation, which is highly restricted but not a true Docker container.
+- Currently supports evaluating only **Java (Java 17)** source code.
+
+---
+
+## 🔮 Future Improvements
+- Migrate local subprocess sandboxing to a hardened Docker API execution layer.
+- Add support for Python, C++, and JavaScript.
+- Implement WebSocket streams for real-time submission verdicts.
+
+---
+
+## 🤝 Contribution Guide
+Contributions, issues, and feature requests are always welcome!
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
