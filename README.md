@@ -1,5 +1,7 @@
 # CodeVerdict
 
+![CI](https://github.com/MylapalliYesebu/CodeVerdict/actions/workflows/ci.yml/badge.svg)
+
 **A highly-performant, secure, and asynchronous backend for evaluating user-submitted algorithms.**
 
 CodeVerdict is a custom-built online judge system entirely decoupled from heavy web frameworks. It evaluates arbitrary Java code against hidden test cases in an isolated execution sandbox, utilizing a lightweight connection-pooling layer, robust JWT authentication, LRU service-caching, and an active queue system.
