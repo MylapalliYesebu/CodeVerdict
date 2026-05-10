@@ -17,3 +17,6 @@ dependency-reduced-pom.xml
 
 # Project-specific
 submissions/
+
+# Documents
+docs/

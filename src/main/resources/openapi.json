@@ -1,0 +1,184 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "CodeVerdict API",
+    "description": "CodeVerdict Online Judge Platform REST API",
+    "version": "1.0.0"
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "Health Check",
+        "tags": ["System"],
+        "responses": {
+          "200": {
+            "description": "System is up and running"
+          }
+        }
+      }
+    },
+    "/api/auth/signup": {
+      "post": {
+        "summary": "Register a new user",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Successful signup" },
+          "400": { "description": "Validation error" }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Login and get token",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Returns session token" },
+          "401": { "description": "Invalid credentials" }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "summary": "Logout from active session",
+        "tags": ["Auth"],
+        "security": [{"bearerAuth": []}],
+        "responses": {
+          "200": { "description": "Logged out successfully" }
+        }
+      }
+    },
+    "/api/problems": {
+      "get": {
+        "summary": "List all problems",
+        "tags": ["Problems"],
+        "responses": {
+          "200": { "description": "List of problems" }
+        }
+      },
+      "post": {
+        "summary": "Create a new problem (ADMIN ONLY)",
+        "tags": ["Problems"],
+        "security": [{"bearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "difficulty": { "type": "string" },
+                  "testCases": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "input": { "type": "string" },
+                        "expectedOutput": { "type": "string" },
+                        "isPublic": { "type": "boolean" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Problem created" }
+        }
+      }
+    },
+    "/api/submit": {
+      "post": {
+        "summary": "Submit code to be judged",
+        "tags": ["Submissions"],
+        "security": [{"bearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "problemId": { "type": "integer" },
+                  "language": { "type": "string", "example": "JAVA" },
+                  "sourceCode": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Code submitted successfully" }
+        }
+      }
+    },
+    "/api/submissions/{id}": {
+      "get": {
+        "summary": "Check status of a specific submission",
+        "tags": ["Submissions"],
+        "security": [{"bearerAuth": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Submission details including verdict" }
+        }
+      }
+    },
+    "/api/leaderboard": {
+      "get": {
+        "summary": "Get the global leaderboard",
+        "tags": ["Leaderboard"],
+        "responses": {
+          "200": { "description": "Leaderboard array" }
+        }
+      }
+    }
+  }
+}

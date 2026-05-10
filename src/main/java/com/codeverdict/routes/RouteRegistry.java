@@ -8,6 +8,7 @@ import com.codeverdict.database.SubmissionDao;
 import com.codeverdict.database.TestCaseDao;
 import com.codeverdict.database.UserDao;
 import com.codeverdict.handlers.AuthHandler;
+import com.codeverdict.handlers.DocsHandler;
 import com.codeverdict.handlers.HealthHandler;
 import com.codeverdict.handlers.LeaderboardHandler;
 import com.codeverdict.handlers.ProblemHandler;
@@ -65,6 +66,12 @@ public final class RouteRegistry {
         register(server, corsFilter, logFilter, "/api/leaderboard",  leaderboardHandler);
 
         register(server, corsFilter, logFilter, "/api/health",       new HealthHandler());
+
+        DocsHandler swaggerUiHandler = new DocsHandler("/swagger-ui.html", "text/html; charset=UTF-8");
+        DocsHandler openapiJsonHandler = new DocsHandler("/openapi.json", "application/json; charset=UTF-8");
+        
+        register(server, corsFilter, logFilter, "/docs", swaggerUiHandler);
+        register(server, corsFilter, logFilter, "/openapi.json", openapiJsonHandler);
 
         LOGGER.info("All routes registered successfully.");
     }
