@@ -57,7 +57,7 @@ public final class ValidationUtil {
      * Validates problem difficulty values.
      */
     public static boolean isValidDifficulty(String difficulty) {
-        return "EASY".equals(difficulty) || "MEDIUM".equals(difficulty) || "HARD".equals(difficulty);
+        return "EASY".equalsIgnoreCase(difficulty) || "MEDIUM".equalsIgnoreCase(difficulty) || "HARD".equalsIgnoreCase(difficulty);
     }
 
     /**

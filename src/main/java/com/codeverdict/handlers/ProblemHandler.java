@@ -148,7 +148,7 @@ public class ProblemHandler extends BaseHandler {
         Problem p = new Problem();
         p.setTitle(ValidationUtil.sanitizeString(req.title));
         p.setDescription(ValidationUtil.sanitizeString(req.description));
-        p.setDifficulty(req.difficulty);
+        p.setDifficulty(req.difficulty.toUpperCase());
         p.setCreatedBy(user.getId());
 
         List<TestCase> tcs = null;

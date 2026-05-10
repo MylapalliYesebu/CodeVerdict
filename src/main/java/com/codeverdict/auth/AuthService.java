@@ -40,7 +40,10 @@ public class AuthService {
      * @return the created User object (with passwordHash removed for safety)
      * @throws IllegalArgumentException if validation fails or username/email is taken
      */
-    public User signup(String username, String email, String rawPassword) {
+    public User signup(String rawUsername, String rawEmail, String rawPassword) {
+        String username = rawUsername != null ? rawUsername.trim() : null;
+        String email = rawEmail != null ? rawEmail.trim().toLowerCase() : null;
+
         if (username == null || !USERNAME_PATTERN.matcher(username).matches()) {
             throw new com.codeverdict.utils.ValidationException("Username must be 3-20 alphanumeric characters");
         }
@@ -84,7 +87,9 @@ public class AuthService {
      * @return the generated session token
      * @throws AuthException if authentication fails
      */
-    public String login(String email, String rawPassword) {
+    public String login(String rawEmail, String rawPassword) {
+        String email = rawEmail != null ? rawEmail.trim().toLowerCase() : null;
+
         User user = userDao.findByEmail(email)
                 .orElseThrow(() -> new AuthException("Invalid email or password"));
 
@@ -146,7 +151,10 @@ public class AuthService {
      * @param email       the admin email
      * @param rawPassword the admin raw password
      */
-    public void provisionAdminIfMissing(String username, String email, String rawPassword) {
+    public void provisionAdminIfMissing(String rawUsername, String rawEmail, String rawPassword) {
+        String username = rawUsername != null ? rawUsername.trim() : null;
+        String email = rawEmail != null ? rawEmail.trim().toLowerCase() : null;
+
         if (userDao.findByEmail(email).isEmpty()) {
             String passwordHash = BCrypt.withDefaults().hashToString(12, rawPassword.toCharArray());
             User admin = new User();

@@ -50,7 +50,7 @@ public class SubmissionService {
         s.setUserId(userId);
         s.setProblemId(problemId);
         s.setSourceCode(sourceCode);
-        s.setLanguage(language);
+        s.setLanguage(language != null ? language.trim().toUpperCase() : null);
         s.setVerdict("PENDING");
         long submissionId = submissionDao.createSubmission(s);
         com.codeverdict.judge.JudgeQueue.getInstance().submit(submissionId);
