@@ -91,10 +91,15 @@ java -jar target/codeverdict.jar
 
 ---
 
-## 🌐 Live Production URLs
+## 🌐 Live Production URLs & API Explorer
 
 The backend is currently deployed and accessible via Render, backed by a Neon PostgreSQL database.
 
+### 📖 Interactive Swagger UI
+You can easily explore and test all API endpoints directly from your browser using the built-in Swagger UI!
+**API Docs URL:** [https://codeverdict-r65q.onrender.com/docs](https://codeverdict-r65q.onrender.com/docs)
+
+### 🔗 Direct Endpoints
 | Endpoint | Production URL |
 |----------|----------------|
 | **Health** | `https://codeverdict-r65q.onrender.com/api/health` |
